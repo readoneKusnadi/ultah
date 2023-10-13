@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selamat Ulang Tahun</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-top: 3%;
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    h3 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 2%;
+      text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    #stars, #falling-stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #ff0;
+      border-radius: 50%;
+      animation: twinkle 1s infinite;
+    }
+
+    .falling-star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #ff0;
+      border-radius: 50%;
+      animation: fall 5s linear infinite, twinkle 1s infinite;
+    }
+
+    #gambar {
+      width: 100px;
+      height: 100px;
+      filter: grayscale(100%); /* Gambar awalnya hitam putih */
+      border-radius: 5px;
+      transition: filter 1s, border-radius 1s;
+      margin-top: 3%;
+      display: block;
+      margin-left: 46%;
+      margin-bottom: 3%;
+    }
+
+    .play-audio #gambar {
+      filter: grayscale(0%); /* Gambar menjadi berwarna setelah audio diputar */
+      border-radius: 0; /* Hapus border radius setelah audio diputar */
+    }
+
+    .play-audio-again #gambar {
+      filter: grayscale(100%); /* Kembalikan gambar menjadi hitam putih setelah audio selesai atau diulang */
+      border-radius: 5px; /* Kembalikan border radius setelah audio selesai atau diulang */
+    }
+
+    @keyframes twinkle {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+    }
+
+    @keyframes fall {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100vh);
+      }
+    }
+  </style>
+</head>
+<body>
+  <img id="gambar" src="../source/img/gambar satu.jpg">
+  
+  <audio id="audio" controls volume="1" loop>
+    <source src="../source/audio/a.mp3" type="audio/mpeg">
+    <source src="../source/audio/b.ogg" type="audio/ogg">
+    <source src="../source/audio/c.wav" type="audio/wav">
+  </audio>
+  <h3>08/10/2002</h3>
+  <h1>Selamat Ulang Tahun My Brother</h1>
+  <h2>Semoga panjang umur, diberikan kesehatan dan keberkahan dalam menjalani hidup, dijauhkan dari mara bahaya dan diberi rezeki yang melimpah, selalu bersyukur serta diwujudkan segala cita-cita. dalam hidup ini hanya ada dua pilihan, yaitu berani melawan atau ikhlas menerima</h2>
+  <h3>-Selamat Ulang Tahun Rangga Alfiansyah-</h3>
+  <div id="stars"></div>
+  <div id="falling-stars"></div>
+  <script>
+    const audio = document.getElementById('audio');
+    const gambar = document.getElementById('gambar');
+
+    audio.addEventListener('play', function () {
+      gambar.classList.add('play-audio');
+    });
+
+    audio.addEventListener('ended', function () {
+      gambar.classList.remove('play-audio');
+      gambar.classList.add('play-audio-again');
+    });
+
+    audio.addEventListener('pause', function () {
+      gambar.classList.remove('play-audio');
+      gambar.classList.add('play-audio-again');
+    });
+
+    function createStar() {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.top = Math.random() * 100 + 'vh';
+      star.style.animationDuration = Math.random() * 2 + 3 + 's';
+      document.getElementById('stars').appendChild(star);
+      star.addEventListener('animationiteration', () => {
+        star.remove();
+        createStar();
+      });
+    }
+
+    function createFallingStar() {
+      const star = document.createElement('div');
+      star.classList.add('falling-star');
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.animationDuration = Math.random() * 4 + 6 + 's';
+      document.getElementById('falling-stars').appendChild(star);
+      star.addEventListener('animationiteration', () => {
+        star.remove();
+        createFallingStar();
+      });
+    }
+
+    for (let i = 0; i < 100; i++) {
+      createStar();
+    }
+
+    for (let i = 0; i < 5; i++) {
+      createFallingStar();
+    }
+  </script>
+</body>
+</html>
